@@ -1,0 +1,236 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Department {
+  CSE
+  ECE
+  IT
+  AIDS
+  MECH
+  EEE
+}
+
+enum PatentStatus {
+  PUBLISHED
+  GRANTED
+}
+
+model Faculty {
+  id            String     @id @default(cuid())
+  name          String
+  department    Department
+  joiningYear   Int
+  qualification String
+  phone         String
+  email         String     @unique
+  googleScholar String?
+  scopusUrl     String?
+  webOfScience  String?
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  // Relations
+  journals      Journal[]
+  conferences   Conference[]
+  books         Book[]
+  patents       Patent[]
+  nptelCourses  NPTELCourse[]
+  awards        Award[]
+  fundingResearch  FundingResearch[]
+  phdGuided        PhDGuided[]
+  consulting       ConsultingDetail[]
+  mous             MoU[]
+  seminars         SeminarWorkshop[]
+  invitedTasks     InvitedTask[]
+
+
+  @@index([department])
+  @@index([joiningYear])
+  @@index([name])
+}
+
+model Journal {
+  id            String   @id @default(cuid())
+  authorName    String
+  paperTitle    String
+  journalName   String
+  doi           String?
+  issn          String?
+  indexedIn     String?
+  impactFactor  Float?
+  year          Int
+  facultyId     String
+  faculty       Faculty  @relation(fields: [facultyId], references: [id], onDelete: Cascade)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([year])
+  @@index([facultyId])
+}
+
+model Conference {
+  id             String   @id @default(cuid())
+  paperSno       String
+  authorDetails  String   // JSON or comma-separated string
+  paperTitle     String
+  conferenceName String
+  publisher      String?
+  doiOrUrl       String?
+  indexedIn      String?
+  year           Int
+  facultyId      String
+  faculty        Faculty  @relation(fields: [facultyId], references: [id], onDelete: Cascade)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([year])
+  @@index([facultyId])
+}
+
+model Book {
+  id         String   @id @default(cuid())
+  authorName String
+  title      String
+  bookTitle  String?
+  isbn       String?
+  publisher  String?
+  year       Int
+  facultyId  String
+  faculty    Faculty  @relation(fields: [facultyId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([year])
+  @@index([facultyId])
+}
+
+model Patent {
+  id            String        @id @default(cuid())
+  patentTitle   String
+  patentNumber  String?
+  authors       String        // JSON or comma-separated string
+  status        PatentStatus
+  country       String
+  year          Int
+  link          String?
+  facultyId     String
+  faculty       Faculty       @relation(fields: [facultyId], references: [id], onDelete: Cascade)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([status])
+  @@index([year])
+  @@index([facultyId])
+}
+
+model NPTELCourse {
+  id              String   @id @default(cuid())
+  courseName      String
+  instructorName  String
+  platformLink    String?
+  completionYear  Int
+  certificateUrl  String?
+  duration        String   // e.g., "8 weeks"
+  facultyId       String
+  faculty         Faculty  @relation(fields: [facultyId], references: [id], onDelete: Cascade)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([completionYear])
+  @@index([facultyId])
+}
+
+model Award {
+  id           String   @id @default(cuid())
+  awardName    String
+  awardingBody String
+  year         Int
+  details      String?
+  link         String?
+  facultyId    String
+  faculty      Faculty  @relation(fields: [facultyId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([year])
+  @@index([facultyId])
+}
+model FundingResearch {
+  id            String   @id @default(cuid())
+  agencyName    String
+  proposalTitle String
+  amount        Float
+  yearReceived  Int
+  facultyId     String
+  faculty       Faculty  @relation(fields: [facultyId], references: [id], onDelete: Cascade)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model PhDGuided {
+  id            String   @id @default(cuid())
+  candidateName String
+  researchYear  Int
+  university    String
+  status        String     // e.g. Ongoing/Completed
+  facultyId     String
+  faculty       Faculty    @relation(fields: [facultyId], references: [id], onDelete: Cascade)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+}
+
+model ConsultingDetail {
+  id            String   @id @default(cuid())
+  companyName   String
+  projectTitle  String
+  amount        Float
+  year          Int
+  status        String
+  facultyId     String
+  faculty       Faculty  @relation(fields: [facultyId], references: [id], onDelete: Cascade)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model MoU {
+  id          String   @id @default(cuid())
+  companyName String
+  purpose     String
+  duration    String
+  facultyId   String
+  faculty     Faculty  @relation(fields: [facultyId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model SeminarWorkshop {
+  id            String   @id @default(cuid())
+  eventName     String
+  title         String
+  fundingAgency String?
+  amount        Float?
+  facultyId     String
+  faculty       Faculty  @relation(fields: [facultyId], references: [id], onDelete: Cascade)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model InvitedTask {
+  id          String   @id @default(cuid())
+  facultyName String
+  title       String
+  invitedAt   DateTime
+  facultyId   String
+  faculty     Faculty  @relation(fields: [facultyId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
