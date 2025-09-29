@@ -25,7 +25,7 @@ export function FacultyForm({ initialData, isEditing = false }: FacultyFormProps
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const params = useParams();
-  const facultyId = params.facultyId as string;
+  const facultyId = params.id  as string;
 
   const {
     register,

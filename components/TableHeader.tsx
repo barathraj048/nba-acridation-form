@@ -59,7 +59,7 @@ export default function TableHeader({
           <Download className="h-4 w-4 mr-2" /> Export
         </Button>
 
-        <Button onClick={onAdd} size="sm">
+        <Button type="button" onClick={onAdd} size="sm">
           <Plus className="h-4 w-4 mr-2" /> Add
         </Button>
       </div>

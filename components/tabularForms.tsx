@@ -31,7 +31,7 @@ function FacultyProfile({ facultyId }: { facultyId: string }) {
         title="Conferences"
         columns={[
           { key: "paperSno", label: "SNo" },
-          { key: "authorDetails", label: "Author Details", type: "json" },
+          { key: "authorDetails", label: "Author Details" },
           { key: "paperTitle", label: "Title" },
           { key: "conferenceName", label: "Conference" },
           { key: "publisher", label: "Publisher" },
@@ -66,7 +66,7 @@ function FacultyProfile({ facultyId }: { facultyId: string }) {
         columns={[
           { key: "patentTitle", label: "Title" },
           { key: "patentNumber", label: "Patent Number" },
-          { key: "authors", label: "Authors", type: "json" },
+          { key: "authors", label: "Authors" },
           { key: "status", label: "Status" },
           { key: "country", label: "Country" },
           { key: "year", label: "Year", type: "number" },
