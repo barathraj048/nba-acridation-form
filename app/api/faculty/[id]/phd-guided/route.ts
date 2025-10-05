@@ -1,33 +1,81 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-export async function GET(req: NextRequest, { params }: { params: { facultyId: string } }) {
-  const { facultyId } = params;
-  const data = await prisma.phDGuided.findMany({ where: { facultyId } });
-  return NextResponse.json({ data });
+interface Context {
+  params: Promise<{ id: string }>;
 }
 
-export async function POST(req: NextRequest, { params }: { params: { facultyId: string } }) {
-  const { facultyId } = params;
+// ✅ Get all PhDs guided by a faculty
+export async function GET(req: NextRequest, context: Context) {
+  const { id: facultyId } = await context.params;
+
+  try {
+    const data = await prisma.phDGuided.findMany({
+      where: { facultyId },
+      orderBy: { researchYear: "desc" },
+    });
+    return NextResponse.json({ data });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
+
+// ✅ Create a new PhD guided
+export async function POST(req: NextRequest, context: Context) {
+  const { id: facultyId } = await context.params;
   const body = await req.json();
-  const newItem = await prisma.phDGuided.create({
-    data: { ...body, facultyId },
-  });
-  return NextResponse.json(newItem, { status: 201 });
+
+  if (!facultyId || !body.candidateName || !body.researchYear || !body.university) {
+    return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+  }
+
+  try {
+    const newItem = await prisma.phDGuided.create({
+      data: {
+        candidateName: body.candidateName,
+        researchYear: body.researchYear,
+        university: body.university,
+        status: body.status || null,
+        facultyId,
+      },
+    });
+    return NextResponse.json(newItem, { status: 201 });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
 }
 
+// ✅ Update PhD guided
 export async function PUT(req: NextRequest) {
   const body = await req.json();
-  const updated = await prisma.phDGuided.update({
-    where: { id: body.id },
-    data: body,
-  });
-  return NextResponse.json(updated);
+  if (!body.id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
+
+  try {
+    const updated = await prisma.phDGuided.update({
+      where: { id: body.id },
+      data: {
+        candidateName: body.candidateName,
+        researchYear: body.researchYear,
+        university: body.university,
+        status: body.status || null,
+      },
+    });
+    return NextResponse.json(updated);
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
 }
 
+// ✅ Delete PhD guided
 export async function DELETE(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const id = searchParams.get("id")!;
-  await prisma.phDGuided.delete({ where: { id } });
-  return NextResponse.json({ success: true });
+  const id = searchParams.get("id");
+  if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
+
+  try {
+    await prisma.phDGuided.delete({ where: { id } });
+    return NextResponse.json({ success: true });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
 }

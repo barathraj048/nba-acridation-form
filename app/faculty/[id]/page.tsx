@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ArrowLeft, Edit, Mail, Phone, ExternalLink, Calendar, Award, FileText, BookOpen, Lightbulb, GraduationCap } from 'lucide-react';
+import { Coins,Briefcase, Handshake, FileSignature, Presentation, UserCheck } from "lucide-react";
 import { prisma } from '@/lib/prisma';
 
 async function getFaculty(id: string) {
@@ -542,6 +543,7 @@ export default async function FacultyProfilePage({
                   ))}
                 </>
               )}
+
             </>
           ) : (
             <Card>
@@ -552,6 +554,207 @@ export default async function FacultyProfilePage({
             </Card>
           )}
         </TabsContent>
+      {/* === FUNDING / RESEARCH === */}
+<TabsContent value="funding" className="space-y-4">
+  {faculty.fundingResearch > 0 ? (
+    faculty.fundingResearch.map((fund) => (
+      <Card key={fund.id}>
+        <CardHeader>
+          <CardTitle className="text-lg">{fund.proposalTitle}</CardTitle>
+          <CardDescription>
+            <strong>{fund.agencyName}</strong> • {fund.yearReceived}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div>
+              <p><strong>Agency Name:</strong> {fund.agencyName}</p>
+              <p><strong>Proposal Title:</strong> {fund.proposalTitle}</p>
+            </div>
+            <div>
+              <p><strong>Amount:</strong> ₹{fund.amount.toLocaleString()}</p>
+              <p><strong>Year Received:</strong> {fund.yearReceived}</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    ))
+  ) : (
+    <Card>
+      <CardContent className="text-center py-8">
+        <FileText className="h-16 w-16 text-slate-300 mx-auto mb-4" />
+        <p className="text-slate-600">No funding or research projects yet</p>
+      </CardContent>
+    </Card>
+  )}
+</TabsContent>
+
+{/* === PHD GUIDED === */}
+<TabsContent value="phd" className="space-y-4">
+  {faculty.phdGuided.length > 0 ? (
+    faculty.phdGuided.map((phd) => (
+      <Card key={phd.id}>
+        <CardHeader>
+          <CardTitle className="text-lg">{phd.candidateName}</CardTitle>
+          <CardDescription>
+            <strong>{phd.university}</strong> • {phd.researchYear}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div>
+              <p><strong>Research Year:</strong> {phd.researchYear}</p>
+              <p><strong>University:</strong> {phd.university}</p>
+            </div>
+            <div>
+              <p><strong>Status:</strong> {phd.status}</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    ))
+  ) : (
+    <Card>
+      <CardContent className="text-center py-8">
+        <GraduationCap className="h-16 w-16 text-slate-300 mx-auto mb-4" />
+        <p className="text-slate-600">No PhD scholars guided yet</p>
+      </CardContent>
+    </Card>
+  )}
+</TabsContent>
+
+{/* === CONSULTING === */}
+<TabsContent value="consulting" className="space-y-4">
+  {faculty.consulting?.length > 0 ? (
+    faculty.consulting.map((c) => (
+      <Card key={c.id}>
+        <CardHeader>
+          <CardTitle className="text-lg">{c.projectTitle}</CardTitle>
+          <CardDescription>
+            <strong>{c.companyName}</strong> • {c.year}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div>
+              <p><strong>Company Name:</strong> {c.companyName}</p>
+              <p><strong>Year:</strong> {c.year}</p>
+            </div>
+            <div>
+              <p><strong>Amount:</strong> ₹{c.amount.toLocaleString()}</p>
+              <p><strong>Status:</strong> {c.status}</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    ))
+  ) : (
+    <Card>
+      <CardContent className="text-center py-8">
+        <Briefcase className="h-16 w-16 text-slate-300 mx-auto mb-4" />
+        <p className="text-slate-600">No consulting projects yet</p>
+      </CardContent>
+    </Card>
+  )}
+</TabsContent>
+
+
+{/* === MOUs === */}
+<TabsContent value="mous" className="space-y-4">
+  {faculty.mous.length > 0 ? (
+    faculty.mous.map((mou) => (
+      <Card key={mou.id}>
+        <CardHeader>
+          <CardTitle className="text-lg">{mou.companyName}</CardTitle>
+          <CardDescription>{mou.purpose}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div>
+              <p><strong>Company:</strong> {mou.companyName}</p>
+              <p><strong>Purpose:</strong> {mou.purpose}</p>
+            </div>
+            <div>
+              <p><strong>Duration:</strong> {mou.duration}</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    ))
+  ) : (
+    <Card>
+      <CardContent className="text-center py-8">
+        <Handshake className="h-16 w-16 text-slate-300 mx-auto mb-4" />
+        <p className="text-slate-600">No MoUs signed yet</p>
+      </CardContent>
+    </Card>
+  )}
+</TabsContent>
+
+{/* === SEMINARS / WORKSHOPS === */}
+{/* === SEMINARS / WORKSHOPS === */}
+<TabsContent value="seminars" className="space-y-4">
+  {faculty.seminars?.length > 0 ? (
+    faculty.seminars.map((event) => (
+      <Card key={event.id}>
+        <CardHeader>
+          <CardTitle className="text-lg">{event.eventName}</CardTitle>
+          <CardDescription>
+            <strong>{event.title}</strong>
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div>
+              {event.fundingAgency && (
+                <p><strong>Funding Agency:</strong> {event.fundingAgency}</p>
+              )}
+              {event.amount && (
+                <p><strong>Amount:</strong> ₹{event.amount.toLocaleString()}</p>
+              )}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    ))
+  ) : (
+    <Card>
+      <CardContent className="text-center py-8">
+        <Calendar className="h-16 w-16 text-slate-300 mx-auto mb-4" />
+        <p className="text-slate-600">No seminars or workshops yet</p>
+      </CardContent>
+    </Card>
+  )}
+</TabsContent>
+
+
+{/* === INVITED TASKS === */}
+<TabsContent value="invited" className="space-y-4">
+  {faculty.invitedTasks.length > 0 ? (
+    faculty.invitedTasks.map((task) => (
+      <Card key={task.id}>
+        <CardHeader>
+          <CardTitle className="text-lg">{task.title}</CardTitle>
+          <CardDescription>
+            Invited by: <strong>{task.facultyName}</strong> • {new Date(task.date).toLocaleDateString()}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p><strong>Role/Details:</strong> {task.invitedAt}</p>
+        </CardContent>
+      </Card>
+    ))
+  ) : (
+    <Card>
+      <CardContent className="text-center py-8">
+        <UserCheck className="h-16 w-16 text-slate-300 mx-auto mb-4" />
+        <p className="text-slate-600">No invited tasks yet</p>
+      </CardContent>
+    </Card>
+  )}
+</TabsContent>
+
+
       </Tabs>
     </div>
   );

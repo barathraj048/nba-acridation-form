@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Users, FileText, BookOpen, Award, GraduationCap, Trophy, Search, Download } from 'lucide-react';
+import { DollarSign, Briefcase, Handshake, CalendarCheck, ClipboardList, Star } from "lucide-react";
 
 const features = [
   {
@@ -45,6 +46,48 @@ const features = [
     icon: Trophy,
     href: '/datasets/awards',
     color: 'bg-red-500',
+  },
+  {
+    title: 'Funding / Research',
+    description: 'Track funding received for research projects',
+    icon: DollarSign,
+    href: '/datasets/funding',
+    color: 'bg-indigo-500',
+  },
+  {
+    title: 'PhD Guided',
+    description: 'Manage PhD candidates guided by faculty',
+    icon: Briefcase,
+    href: '/datasets/phd',
+    color: 'bg-pink-500',
+  },
+  {
+    title: 'Consulting',
+    description: 'Track consulting projects and collaborations',
+    icon: Handshake,
+    href: '/datasets/consulting',
+    color: 'bg-yellow-500',
+  },
+  {
+    title: 'MoUs',
+    description: 'Manage Memoranda of Understanding with organizations',
+    icon: ClipboardList,
+    href: '/datasets/mous',
+    color: 'bg-cyan-500',
+  },
+  {
+    title: 'Seminars / Workshops',
+    description: 'Record faculty participation in seminars and workshops',
+    icon: CalendarCheck,
+    href: '/datasets/seminars',
+    color: 'bg-lime-500',
+  },
+  {
+    title: 'Invited Tasks',
+    description: 'Track invited talks, sessions, or responsibilities',
+    icon: Star,
+    href: '/datasets/invited',
+    color: 'bg-fuchsia-500',
   },
 ];
 

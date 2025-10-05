@@ -1,23 +1,23 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-interface Params {
-  params: { id: string };
+// 👇 Notice: params is now a Promise in Next.js 15
+interface Context {
+  params: Promise<{ id: string }>;
 }
 
 // CREATE a new patent under a faculty
-export async function POST(req: Request, { params }: Params) {
+export async function POST(req: Request, context: Context) {
   try {
+    const { id } = await context.params; // ✅ await the params
     const data = await req.json();
 
-    if (!params.id) {
-      throw new Error("facultyId missing in URL");
-    }
+    if (!id) throw new Error("facultyId missing in URL");
 
     const patent = await prisma.patent.create({
       data: {
         ...data,
-        facultyId: params.id, // link patent to faculty
+        facultyId: id, // link patent to faculty
       },
     });
 
@@ -29,14 +29,14 @@ export async function POST(req: Request, { params }: Params) {
 }
 
 // GET all patents for a faculty
-export async function GET(_: Request, { params }: Params) {
+export async function GET(_: Request, context: Context) {
   try {
-    if (!params.id) {
-      throw new Error("facultyId missing in URL");
-    }
+    const { id } = await context.params; // ✅ await the params
+
+    if (!id) throw new Error("facultyId missing in URL");
 
     const patents = await prisma.patent.findMany({
-      where: { facultyId: params.id },
+      where: { facultyId: id },
       orderBy: { year: "desc" }, // optional: sort by year
     });
 
@@ -48,19 +48,18 @@ export async function GET(_: Request, { params }: Params) {
 }
 
 // UPDATE a patent
-export async function PUT(req: Request, { params }: Params) {
+export async function PUT(req: Request, context: Context) {
   try {
-    const { id, ...updates } = await req.json();
+    const { id } = await context.params; // ✅ await the params
+    const { id: patentId, ...updates } = await req.json();
 
-    if (!params.id) {
-      throw new Error("facultyId missing in URL");
-    }
+    if (!id) throw new Error("facultyId missing in URL");
 
     const patent = await prisma.patent.update({
-      where: { id },
+      where: { id: patentId },
       data: {
         ...updates,
-        facultyId: params.id, // keep the link consistent
+        facultyId: id, // keep link consistent
       },
     });
 

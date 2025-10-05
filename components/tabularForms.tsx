@@ -100,7 +100,7 @@ function FacultyProfile({ facultyId }: { facultyId: string }) {
           { key: "awardName", label: "Award" },
           { key: "awardingBody", label: "Awarding Body" },
           { key: "year", label: "Year", type: "number" },
-          { key: "detailsLink", label: "Details/Link" },
+          { key: "link", label: "Details/Link" },
         ]}
         defaultQuery={{ year_gte: fourYearsAgo }}
         csvTemplateKey="awards"
