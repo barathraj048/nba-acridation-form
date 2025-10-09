@@ -47,10 +47,9 @@ export async function GET(_: Request, context: Context) {
   }
 }
 
-// UPDATE a patent
 export async function PUT(req: Request, context: Context) {
   try {
-    const { id } = await context.params; // ✅ await the params
+    const { id } = await context.params; 
     const { id: patentId, ...updates } = await req.json();
 
     if (!id) throw new Error("facultyId missing in URL");
@@ -59,7 +58,7 @@ export async function PUT(req: Request, context: Context) {
       where: { id: patentId },
       data: {
         ...updates,
-        facultyId: id, // keep link consistent
+        facultyId: id, 
       },
     });
 
