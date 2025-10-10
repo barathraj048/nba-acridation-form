@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "seed": "node --loader ts-node/esm prisma/seed.ts",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

@@ -236,7 +236,6 @@ export function FacultyForm({ initialData, isEditing = false }: FacultyFormProps
             <TabularCRUD facultyId={facultyId}></TabularCRUD>
           </div>
 
-          {/* Form Actions */}
           <div className="flex gap-4 pt-6">
             <Button
               type="button"
