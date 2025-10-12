@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ArrowLeft, Edit, Mail, Phone, ExternalLink, Calendar, Award, FileText, BookOpen, Lightbulb, GraduationCap } from 'lucide-react';
 import { Coins,Briefcase, Handshake, FileSignature, Presentation, UserCheck } from "lucide-react";
 import { prisma } from '@/lib/prisma';
+import DownloadPDFButton from '@/components/pdf-downloadButton';
 
 async function getFaculty(id: string) {
   const faculty = await prisma.faculty.findUnique({
@@ -70,12 +71,15 @@ export default async function FacultyProfilePage({
             Back to Faculty
           </Link>
         </Button>
+        <div className='gap-2'> 
         <Button asChild>
           <Link href={`/faculty/${faculty.id}/edit`}>
-            <Edit className="h-4 w-4 mr-2" />
+            <Edit className="h-4 w-4 mr-2 mr-2" />
             Edit Profile
           </Link>
         </Button>
+        <DownloadPDFButton/>
+        </div>
       </div>
 
       {/* Faculty Profile Header */}
