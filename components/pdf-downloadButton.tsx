@@ -1,20 +1,17 @@
 "use client";
 import { Button } from "@/components/ui/button";
 
-export default function DownloadPDFButton() {
-  const downloadPDF = async () => {
-    const res = await fetch("/api/faculty/downolad-pdf");
+export function DownloadFacultyButton() {
+  const download = async () => {
+    const res = await fetch("/api/download/faculty");
     const blob = await res.blob();
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "faculty_data.pdf";
-    a.click();
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "faculty_data.pdf";
+    link.click();
+    URL.revokeObjectURL(url);
   };
 
-  return (
-    <Button onClick={downloadPDF}>
-      Download Faculty Data PDF
-    </Button>
-  );
+  return <Button onClick={download}>Download Faculty PDF</Button>;
 }
