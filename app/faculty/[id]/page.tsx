@@ -78,7 +78,7 @@ export default async function FacultyProfilePage({
             Edit Profile
           </Link>
         </Button>
-        <DownloadFacultyButton/>
+        <DownloadFacultyButton facultyId={id}/>
         </div>
       </div>
 

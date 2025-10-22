@@ -10,6 +10,7 @@ import { Plus, User, Mail, Phone, ExternalLink, Eye, Edit, Trash2, Download } fr
 import useSWR from 'swr';
 import { toast } from 'sonner';
 import { exportToCSV, csvTemplates } from '@/lib/csv-utils';
+import { DownloadFacultyButton } from '@/components/downloadAll';
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -122,6 +123,7 @@ export default function FacultyPage() {
               Add Faculty
             </Link>
           </Button>
+          <DownloadFacultyButton/>
 
         </div>
       </div>
