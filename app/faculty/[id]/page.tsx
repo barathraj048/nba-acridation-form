@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ArrowLeft, Edit, Mail, Phone, ExternalLink, Calendar, Award, FileText, BookOpen, Lightbulb, GraduationCap } from 'lucide-react';
 import { Coins,Briefcase, Handshake, FileSignature, Presentation, UserCheck } from "lucide-react";
 import { prisma } from '@/lib/prisma';
-import DownloadPDFButton from '@/components/pdf-downloadButton';
+import {DownloadFacultyButton} from '@/components/pdf-downloadButton';
 
 async function getFaculty(id: string) {
   const faculty = await prisma.faculty.findUnique({
@@ -78,7 +78,7 @@ export default async function FacultyProfilePage({
             Edit Profile
           </Link>
         </Button>
-        <DownloadPDFButton/>
+        <DownloadFacultyButton/>
         </div>
       </div>
 

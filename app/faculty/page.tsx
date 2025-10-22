@@ -10,7 +10,6 @@ import { Plus, User, Mail, Phone, ExternalLink, Eye, Edit, Trash2, Download } fr
 import useSWR from 'swr';
 import { toast } from 'sonner';
 import { exportToCSV, csvTemplates } from '@/lib/csv-utils';
-import DownloadPDFButton from '@/components/pdf-downloadButton';
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
